@@ -1,6 +1,6 @@
 # BKT Friyay night 🍲
 
-Invitation page for the housewarming open house on Friday 16 October 2026: details, RSVP with a live guest list, a potluck board guests can claim from, and directions.
+Invitation page for BKT Friyay Night on Friday 16 October 2026: details, RSVP with a live guest list, a potluck board guests can claim from, and directions.
 
 Plain HTML/CSS/JS with no build step. Data is stored in Supabase.
 

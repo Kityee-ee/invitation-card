@@ -5,18 +5,18 @@
     title: "BKT Friyay night",
     address: "139 Boundary Road, North Melbourne VIC 3051",
     location: "Game room (ground floor), 139 Boundary Road, North Melbourne VIC 3051",
-    details: "Housewarming open house. Bak Kut Teh and rice. Come whenever from 5:30pm! Ring intercom 221, game room door code 9218.",
-    startUtc: "20261016T063000Z", // 5:30pm AEDT
+    details: "Bak Kut Teh and rice. Come whenever from 6:00pm! Ring intercom 221, game room door code 9218.",
+    startUtc: "20261016T070000Z", // 6:00pm AEDT
     endUtc: "20261016T120000Z",   // 11:00pm AEDT
   };
 
   const CATEGORIES = [
-    { id: "drinks", title: "Drinks", color: "#bcd8ef" },
-    { id: "fruits", title: "Fruits", color: "#bfe3d0" },
-    { id: "dessert", title: "Dessert", color: "#f4c6d2" },
+    { id: "drinks", title: "Drinks", color: "#f7cdd2" },
+    { id: "fruits", title: "Fruits", color: "#f8e7a6" },
+    { id: "dessert", title: "Dessert", color: "#d2e8cc" },
   ];
 
-  const AVATAR_COLORS = ["#f6d3c6", "#f4c6d2", "#cdc2ec", "#bfe3d0", "#f8e2a0", "#bcd8ef", "#e7d3f0", "#fbd9b8"];
+  const AVATAR_COLORS = ["#f4cfb8", "#f7cdd2", "#f8e7a6", "#d2e8cc", "#e8c9a6", "#cddff0", "#ddd2f0", "#f2bfa6"];
 
   const SEED_ITEMS = [
     ["drinks", "Soft drinks or juice"],
@@ -99,80 +99,6 @@
     const msg = String((err && (err.message || err)) || "");
     for (const key of Object.keys(FRIENDLY_ERRORS)) if (msg.includes(key)) return FRIENDLY_ERRORS[key];
     return "Couldn't save. Check your connection and try again.";
-  }
-
-  // ---------- watercolour washes behind cards ----------
-
-  function mulberry32(seed) {
-    return () => {
-      seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
-      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  }
-
-  // Irregular rounded blob filling roughly a w×h box, as a smooth closed path.
-  function blobPath(rand, w, h, inset) {
-    const pts = [];
-    const n = 18;
-    for (let i = 0; i < n; i++) {
-      const a = (i / n) * Math.PI * 2;
-      // superellipse-ish so the blob fills the rectangle corners
-      const c = Math.cos(a), s = Math.sin(a);
-      const k = 0.3;
-      const x = Math.sign(c) * Math.pow(Math.abs(c), k);
-      const y = Math.sign(s) * Math.pow(Math.abs(s), k);
-      const rx = w / 2 - inset - rand() * 10;
-      const ry = h / 2 - inset - rand() * 10;
-      pts.push([w / 2 + x * rx, h / 2 + y * ry]);
-    }
-    let d = `M${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
-    for (let i = 0; i < n; i++) {
-      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
-      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
-      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
-      d += ` C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
-    }
-    return d + "Z";
-  }
-
-  // Painted at the card's real pixel size so the paint texture isn't stretched.
-  function paintWash(card, i) {
-    const w = Math.round(card.offsetWidth + 8);
-    const h = Math.round(card.offsetHeight + 12);
-    if (!w || !h || (card._washSize === `${w}x${h}`)) return;
-    card._washSize = `${w}x${h}`;
-    const color = card.dataset.wash;
-    const rand = mulberry32(i * 977 + 13);
-    const outer = blobPath(rand, w, h, 4);
-    const inner = blobPath(rand, w, h, 22);
-    let svg = card.querySelector(":scope > .wash");
-    if (!svg) {
-      svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("class", "wash");
-      svg.setAttribute("aria-hidden", "true");
-      card.prepend(svg);
-      card.classList.add("washed");
-    }
-    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
-    svg.innerHTML = `
-      <g filter="url(#wc-wash)">
-        <path d="${outer}" fill="${color}" fill-opacity="0.6"/>
-        <path d="${inner}" fill="#fffaf3" fill-opacity="0.4"/>
-        <path d="${outer}" fill="none" stroke="${color}" stroke-width="3"/>
-      </g>`;
-  }
-
-  function paintWashes() {
-    const cards = Array.from(document.querySelectorAll("[data-wash]"));
-    cards.forEach(paintWash);
-    if ("ResizeObserver" in window) {
-      const ro = new ResizeObserver((entries) => {
-        entries.forEach((e) => paintWash(e.target, cards.indexOf(e.target)));
-      });
-      cards.forEach((c) => ro.observe(c));
-    }
   }
 
   // ---------- backends ----------
@@ -376,8 +302,11 @@
       no: `Sorry you can't make it, ${me && me.name}.`,
     };
     $("#rsvp-status").textContent = me ? statusLine[me.status] : "";
-    $("#rsvp-btn").textContent = me ? "Change my RSVP" : "RSVP";
+    $("#rsvp-submit").firstChild.textContent = me ? "Update my RSVP " : "RSVP now ";
+    fillRsvpForm();
   }
+
+  const TICK = '<svg viewBox="0 0 24 24"><path d="M4 13l5 5L20 5"/></svg>';
 
   function renderPotluck() {
     const html = CATEGORIES.map((cat) => {
@@ -386,29 +315,33 @@
         const mine = state.myItemIds.has(it.id);
         if (!it.claimed_by) {
           return `
-            <li class="pot-item open">
-              <span class="pot-main"><span class="pot-label">${escapeHtml(it.label)}</span><span class="pot-who">Up for grabs</span></span>
-              <button class="btn" type="button" data-claim="${escapeHtml(it.id)}">I'll bring this</button>
+            <li class="note-item">
+              <span class="tick" aria-hidden="true"></span>
+              <span>
+                <span class="note-label">${escapeHtml(it.label)}</span>
+                <button class="note-claim" type="button" data-claim="${escapeHtml(it.id)}">I'll bring this</button>
+              </span>
             </li>`;
         }
         const what = it.note ? `${escapeHtml(it.label)}: <em>${escapeHtml(it.note)}</em>` : escapeHtml(it.label);
         return `
-          <li class="pot-item">
-            ${avatarHtml(it.claimed_by, { me: mine })}
-            <span class="pot-main">
-              <span class="pot-label">${what}</span>
-              <span class="pot-who">${mine ? "You're bringing this" : escapeHtml(it.claimed_by)}${
+          <li class="note-item">
+            <span class="tick" aria-hidden="true">${TICK}</span>
+            <span>
+              <span class="note-label">${what}</span>
+              <span class="note-who">– ${mine ? "you ♥" : escapeHtml(it.claimed_by)}${
                 mine ? ` · <button class="link-btn" type="button" data-unclaim="${escapeHtml(it.id)}">unclaim</button>` : ""
               }</span>
             </span>
           </li>`;
       });
       return `
-        <div class="pot-cat" style="--c:${cat.color}">
-          <h4>${cat.title}</h4>
-          <ul class="pot-items">${rows.join("")}</ul>
-          <button class="pot-add" type="button" data-add="${cat.id}">+ Add something else</button>
-        </div>`;
+        <article class="note" style="--note:${cat.color}">
+          <span class="pin" aria-hidden="true"></span>
+          <h3 class="note-title">${cat.title}<svg class="note-ic" aria-hidden="true"><use href="#ic-${cat.id}"/></svg></h3>
+          <ul class="note-items">${rows.join("")}</ul>
+          <button class="note-add" type="button" data-add="${cat.id}">Add yours…</button>
+        </article>`;
     }).join("");
     $("#potluck").innerHTML = html;
   }
@@ -445,11 +378,11 @@
   let changeTimer;
   const onRemoteChange = () => { clearTimeout(changeTimer); changeTimer = setTimeout(refresh, 300); };
 
-  // ---------- RSVP dialog ----------
+  // ---------- RSVP form ----------
 
-  const rsvpDialog = $("#rsvp-dialog");
   const rsvpForm = $("#rsvp-form");
   let plusOnes = 0;
+  let rsvpEdited = false; // don't overwrite what the guest is typing on refresh
 
   function setPlus(n) {
     plusOnes = Math.max(0, Math.min(5, n));
@@ -463,21 +396,19 @@
     $("#plus-field").hidden = status === "no";
   }
 
-  $("#rsvp-btn").addEventListener("click", () => {
+  function fillRsvpForm() {
+    if (rsvpEdited) return;
     const me = myRsvp();
-    rsvpForm.reset();
-    $("#rsvp-error").textContent = "";
     rsvpForm.name.value = knownName();
-    if (me) rsvpForm.querySelector(`input[value="${me.status}"]`).checked = true;
+    rsvpForm.querySelectorAll('input[name="status"]').forEach((r) => { r.checked = Boolean(me) && r.value === me.status; });
     setPlus(me ? me.plus_ones : 0);
     syncPlusVisibility();
-    rsvpDialog.showModal();
-    if (!rsvpForm.name.value) rsvpForm.name.focus();
-  });
+  }
 
-  rsvpForm.addEventListener("change", syncPlusVisibility);
+  rsvpForm.addEventListener("input", () => { rsvpEdited = true; });
+  rsvpForm.addEventListener("change", () => { rsvpEdited = true; syncPlusVisibility(); });
   rsvpForm.querySelectorAll("[data-step]").forEach((b) =>
-    b.addEventListener("click", () => setPlus(plusOnes + Number(b.dataset.step)))
+    b.addEventListener("click", () => { rsvpEdited = true; setPlus(plusOnes + Number(b.dataset.step)); })
   );
 
   rsvpForm.addEventListener("submit", async (e) => {
@@ -492,7 +423,8 @@
     try {
       await api.saveRsvp(name, status, status === "no" ? 0 : plusOnes);
       local.set("bkt.name", name);
-      rsvpDialog.close();
+      rsvpEdited = false;
+      err.textContent = "";
       toast(status === "yes" ? "Yay! See you Friday 🎉" : status === "maybe" ? "Got it. Hope to see you!" : "Thanks for letting us know 💛");
       await refresh();
     } catch (ex) {
@@ -638,7 +570,6 @@
 
   // ---------- start ----------
 
-  paintWashes();
   render();
   refresh();
   api.subscribe(onRemoteChange);
