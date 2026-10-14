@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>BKT Friyay Night</title>
+  <meta name="description" content="Housewarming open house: Bak Kut Teh on Friday 16 October from 5:30pm. RSVP and claim something for the potluck.">
+  <meta property="og:title" content="BKT Friyay night 🍲">
+  <meta property="og:description" content="Housewarming open house · Fri 16 Oct · from 5:30pm. Jom makan!">
+  <meta name="theme-color" content="#fbf6ef">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%B2%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="intro-active">
+
+  <!-- Shared watercolour filters -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="wc" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="warp"/>
+        <feDisplacementMap in="SourceGraphic" in2="warp" scale="8" xChannelSelector="R" yChannelSelector="G" result="bleed"/>
+        <feGaussianBlur in="bleed" stdDeviation="0.7" result="soft"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="3" result="grain"/>
+        <feColorMatrix in="grain" type="saturate" values="0" result="grey"/>
+        <feComposite in="soft" in2="grey" operator="arithmetic" k1="0.45" k2="0.75" k3="0" k4="0"/>
+      </filter>
+      <filter id="wc-wash" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="11" result="warp"/>
+        <feDisplacementMap in="SourceGraphic" in2="warp" scale="22" xChannelSelector="R" yChannelSelector="G" result="bleed"/>
+        <feGaussianBlur in="bleed" stdDeviation="1.4" result="soft"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.006" numOctaves="2" seed="5" result="pool"/>
+        <feColorMatrix in="pool" type="saturate" values="0" result="grey"/>
+        <feComposite in="soft" in2="grey" operator="arithmetic" k1="0.3" k2="0.85" k3="0" k4="0"/>
+      </filter>
+      <filter id="pencil" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="2" seed="4" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Envelope intro -->
+  <div id="intro" class="intro" role="dialog" aria-modal="true" aria-label="Invitation envelope">
+    <button class="envelope" id="envelope" type="button" aria-label="Open the invitation">
+      <span class="env-back"></span>
+      <span class="env-card">
+        <span class="env-card-title">Jom makan!</span>
+        <span class="env-card-sub">you're invited 🍲</span>
+      </span>
+      <span class="env-front"></span>
+      <span class="env-flap"></span>
+      <span class="env-seal">BKT</span>
+    </button>
+    <p class="intro-hint">Tap to open</p>
+  </div>
+
+  <div id="demo-banner" class="demo-banner" hidden>
+    Demo mode: RSVPs are only saved in this browser until Supabase is connected.
+  </div>
+
+  <main id="main" tabindex="-1">
+
+    <!-- Hero -->
+    <header class="hero">
+      <p class="eyebrow">you're invited to a housewarming open house</p>
+      <h1 class="title">BKT Friyay night</h1>
+      <svg class="hero-art" viewBox="0 0 340 230" role="img" aria-label="Watercolour painting of a claypot of Bak Kut Teh with a bowl of rice and a cup of tea">
+        <!-- splashes -->
+        <g filter="url(#wc)" opacity="0.55">
+          <circle cx="40" cy="60" r="14" fill="#f4c6d2"/>
+          <circle cx="300" cy="48" r="10" fill="#cdc2ec"/>
+          <circle cx="318" cy="92" r="6" fill="#f8e2a0"/>
+          <circle cx="22" cy="118" r="7" fill="#bfe3d0"/>
+          <ellipse cx="170" cy="208" rx="150" ry="16" fill="#d9d0f0"/>
+        </g>
+        <!-- steam -->
+        <g class="steam" fill="none" stroke="#cfc3ea" stroke-width="7" stroke-linecap="round" filter="url(#wc)">
+          <path d="M140 92 C128 72 152 62 140 40"/>
+          <path d="M172 88 C160 64 186 54 172 26"/>
+          <path d="M204 92 C192 72 216 62 204 42"/>
+        </g>
+        <!-- teacup -->
+        <g filter="url(#wc)">
+          <path d="M28 168 Q30 204 58 204 Q86 204 88 168 Z" fill="#bfe3d0"/>
+          <ellipse cx="58" cy="168" rx="30" ry="7" fill="#e3c08f"/>
+        </g>
+        <!-- claypot -->
+        <g filter="url(#wc)">
+          <ellipse cx="78" cy="128" rx="13" ry="8" fill="#e8a48c"/>
+          <ellipse cx="262" cy="128" rx="13" ry="8" fill="#e8a48c"/>
+          <path d="M80 112 Q78 196 170 198 Q262 196 260 112 Z" fill="#f1b7a1"/>
+          <ellipse cx="170" cy="112" rx="92" ry="20" fill="#e7a28b"/>
+          <ellipse cx="170" cy="114" rx="81" ry="14" fill="#d8a678"/>
+          <ellipse cx="150" cy="113" rx="40" ry="6" fill="#e6bb8d" opacity="0.8"/>
+        </g>
+        <!-- what's in the pot -->
+        <g filter="url(#wc)">
+          <g transform="rotate(-18 128 108)"><rect x="106" y="101" width="46" height="13" rx="6.5" fill="#c98a74"/><circle cx="106" cy="107.5" r="6" fill="#f6ead8"/></g>
+          <g transform="rotate(14 196 108)"><rect x="180" y="102" width="42" height="12" rx="6" fill="#bf806b"/><circle cx="222" cy="108" r="5.5" fill="#f6ead8"/></g>
+          <g transform="rotate(-6 165 116)"><rect x="150" y="111" width="34" height="11" rx="5.5" fill="#cf917a"/></g>
+          <ellipse cx="226" cy="117" rx="12" ry="6" fill="#8f6f62"/>
+          <ellipse cx="120" cy="119" rx="5" ry="3.5" fill="#fbf2e2"/>
+          <ellipse cx="131" cy="121" rx="4.5" ry="3" fill="#fbf2e2"/>
+          <ellipse cx="205" cy="121" rx="5" ry="3.2" fill="#fbf2e2"/>
+          <circle cx="143" cy="107" r="3.4" fill="#9fd3ae"/>
+          <circle cx="176" cy="104" r="3" fill="#9fd3ae"/>
+          <circle cx="198" cy="118" r="3.2" fill="#9fd3ae"/>
+          <circle cx="160" cy="121" r="2.6" fill="#9fd3ae"/>
+        </g>
+        <!-- rice bowl -->
+        <g filter="url(#wc)">
+          <path d="M240 170 Q240 210 278 210 Q316 210 316 170 Z" fill="#bcd8ef"/>
+          <path d="M243 171 Q252 144 278 146 Q304 144 313 171 Z" fill="#fffaf2"/>
+          <path d="M250 196 Q278 202 306 196" stroke="#f4c6d2" stroke-width="5" fill="none"/>
+        </g>
+        <!-- pencil outlines -->
+        <g fill="none" stroke="#7d6573" stroke-width="1.4" stroke-linecap="round" opacity="0.55" filter="url(#pencil)">
+          <path d="M80 112 Q78 196 170 198 Q262 196 260 112"/>
+          <ellipse cx="170" cy="112" rx="92" ry="20"/>
+          <path d="M240 170 Q240 210 278 210 Q316 210 316 170 Z"/>
+          <path d="M28 168 Q30 204 58 204 Q86 204 88 168"/>
+          <path d="M262 140 L322 112 M268 146 L330 124"/>
+        </g>
+        <g stroke="#c9a27e" stroke-width="3.2" stroke-linecap="round" filter="url(#wc)">
+          <path d="M262 140 L322 112"/><path d="M268 146 L330 124"/>
+        </g>
+      </svg>
+      <p class="hero-when">Friday 16 October</p>
+      <p class="hero-time">from 5:30pm · come whenever, the pot will be on!</p>
+    </header>
+
+    <!-- Details -->
+    <section class="card" aria-labelledby="details-h" data-wash="#f6d3c6">
+      <h2 id="details-h">The details</h2>
+      <ul class="details">
+        <li>
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+          <div><strong>Friday, 16 October 2026</strong><span>Housewarming open house</span></div>
+        </li>
+        <li>
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg>
+          <div><strong>From 5:30pm</strong><span>Flexible: come whenever you can</span></div>
+        </li>
+        <li>
+          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+          <div><strong>Game room, ground floor</strong><span>139 Boundary Road, North Melbourne VIC 3051</span></div>
+        </li>
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn-soft" id="maps-link" target="_blank" rel="noopener">Open in Maps</a>
+        <a class="btn btn-soft" id="gcal-link" target="_blank" rel="noopener">Google Calendar</a>
+        <button class="btn btn-soft" id="ics-btn" type="button">Apple / Outlook</button>
+      </div>
+    </section>
+
+    <!-- Guests -->
+    <section class="card" aria-labelledby="guests-h" data-wash="#d9d0f0">
+      <h2 id="guests-h">Who's coming</h2>
+      <p class="guest-count" id="guest-count" aria-live="polite">Loading the guest list…</p>
+      <ul class="guest-list" id="guest-list"></ul>
+      <div class="maybe-wrap" id="maybe-wrap" hidden>
+        <h3>Maybe</h3>
+        <ul class="guest-list guest-list-sm" id="maybe-list"></ul>
+      </div>
+      <p class="cant-line" id="cant-line" hidden></p>
+      <div class="rsvp-cta">
+        <p class="rsvp-status" id="rsvp-status"></p>
+        <button class="btn btn-big" id="rsvp-btn" type="button">RSVP</button>
+      </div>
+    </section>
+
+    <!-- Menu -->
+    <section class="card" aria-labelledby="menu-h" data-wash="#f8e6b0">
+      <h2 id="menu-h">On the table</h2>
+      <h3 class="sub-h">From the host's kitchen</h3>
+      <ul class="host-menu">
+        <li><span class="dish">Bak Kut Teh</span><span class="dish-desc">Malaysian herbal pork rib soup, slow-simmered with garlic and spices</span></li>
+        <li><span class="dish">Steamed rice</span><span class="dish-desc">Lots of it, to soak up the broth</span></li>
+      </ul>
+
+      <h3 class="sub-h">Potluck board</h3>
+      <p class="hint">Claim what you'll bring so we don't double up. Tap a slot, or add your own.</p>
+      <div class="potluck" id="potluck"></div>
+    </section>
+
+    <!-- Itinerary -->
+    <section class="card" aria-labelledby="route-h" data-wash="#c9e7d6">
+      <h2 id="route-h">Getting there</h2>
+      <ol class="route">
+        <li>
+          <span class="dot" style="--c:#f4c6d2"></span>
+          <div>
+            <strong>5:30pm onwards: arrive at the lobby</strong>
+            <span>139 Boundary Road, North Melbourne. Come whenever suits you.</span>
+          </div>
+        </li>
+        <li>
+          <span class="dot" style="--c:#cdc2ec"></span>
+          <div>
+            <strong>Ring intercom 221</strong>
+            <span>We'll buzz you in.</span>
+          </div>
+        </li>
+        <li>
+          <span class="dot" style="--c:#bfe3d0"></span>
+          <div>
+            <strong>Head to the game room on the ground floor</strong>
+            <span>It's booked for us. Let yourself in with the door code:</span>
+            <button class="door-code" id="door-code" type="button" aria-label="Door code 9218, tap to copy">
+              <span>9218</span><small>tap to copy</small>
+            </button>
+          </div>
+        </li>
+      </ol>
+      <p class="hint">Need anything? Our place is U221.</p>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-big">See you there. Jom makan!</p>
+    </footer>
+  </main>
+
+  <!-- RSVP dialog -->
+  <dialog id="rsvp-dialog" class="sheet" aria-labelledby="rsvp-title">
+    <form id="rsvp-form" novalidate>
+      <h2 id="rsvp-title">Are you coming?</h2>
+      <label class="field">
+        <span>Your name</span>
+        <input name="name" id="rsvp-name" maxlength="40" autocomplete="given-name" required>
+      </label>
+      <fieldset class="choices">
+        <legend>RSVP</legend>
+        <label><input type="radio" name="status" value="yes" required><span>Count me in!</span></label>
+        <label><input type="radio" name="status" value="maybe"><span>Maybe</span></label>
+        <label><input type="radio" name="status" value="no"><span>Can't make it</span></label>
+      </fieldset>
+      <div class="field plus-field" id="plus-field">
+        <span id="plus-label">Bringing anyone?</span>
+        <div class="stepper" role="group" aria-labelledby="plus-label">
+          <button type="button" data-step="-1" aria-label="One fewer">−</button>
+          <output id="plus-out" aria-live="polite">0</output>
+          <button type="button" data-step="1" aria-label="One more">+</button>
+        </div>
+      </div>
+      <p class="form-error" id="rsvp-error" role="alert"></p>
+      <div class="sheet-actions">
+        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+        <button type="submit" class="btn">Send RSVP</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Potluck dialog -->
+  <dialog id="pot-dialog" class="sheet" aria-labelledby="pot-title">
+    <form id="pot-form" novalidate>
+      <h2 id="pot-title"></h2>
+      <label class="field">
+        <span>Your name</span>
+        <input name="name" id="pot-name" maxlength="40" autocomplete="given-name" required>
+      </label>
+      <label class="field">
+        <span id="pot-what-label"></span>
+        <input name="what" id="pot-what" maxlength="60">
+      </label>
+      <p class="form-error" id="pot-error" role="alert"></p>
+      <div class="sheet-actions">
+        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+        <button type="submit" class="btn" id="pot-submit">Claim it</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
